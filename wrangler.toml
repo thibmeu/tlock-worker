@@ -1,0 +1,10 @@
+name = "tlock_worker"
+main = "build/worker/shim.mjs"
+compatibility_date = "2022-01-20"
+workers_dev = true
+
+[vars]
+WORKERS_RS_VERSION = "0.0.11"
+
+[build]
+command = "cargo install -q worker-build --git https://github.com/cloudflare/workers-rs --branch main && worker-build --release"
