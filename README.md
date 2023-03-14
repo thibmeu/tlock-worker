@@ -8,12 +8,12 @@ If you'd like to perform local encryption and decryption, you can install `dee`.
 
 ### Encryption
 
+**Only supported for a fixed round number when using the worker.**
+
 * local: `dee crypt -r 1000 original.png > encrypted.pem`
 * remote: `curl -X POST --data-binary @original.png https://tlock_worker.crypto-team.workers.dev/encrypt/1000 > encrypted.pem`
 
 ### Decryption
-
-**Only supported for round 1000**
 
 * local: `dee crypt --decrypt encrypted.pem > decrypted.png`
 * remote: `curl -X POST --data-binary @encrypted.pem https://tlock_worker.crypto-team.workers.dev/decrypt > decrypted.png`
