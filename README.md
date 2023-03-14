@@ -1,26 +1,25 @@
-# Template: worker-rust
+# tlock-worker
 
-[![Deploy to Cloudflare Workers](https://deploy.workers.cloudflare.com/button)](https://deploy.workers.cloudflare.com/?url=https://github.com/cloudflare/templates/tree/main/worker-rust)
-
-A template for kick starting a Cloudflare worker project using [`workers-rs`](https://github.com/cloudflare/workers-rs).
-
-This template is designed for compiling Rust to WebAssembly and publishing the resulting worker to Cloudflare's [edge infrastructure](https://www.cloudflare.com/network/).
-
-## Setup
-
-To create a `my-project` directory using this template, run:
-
-```sh
-$ npm init cloudflare my-project worker-rust
-# or
-$ yarn create cloudflare my-project worker-rust
-# or
-$ pnpm create cloudflare my-project worker-rust
-```
-
-> **Note:** Each command invokes [`create-cloudflare`](https://www.npmjs.com/package/create-cloudflare) for project creation.
+Demonstration worker supporting timelock encryption. Deployed at `https://tlock_worker.crypto-team.workers.dev`.
 
 ## Usage
+
+If you'd like to perform local encryption and decryption, you can install `dee`. Pre-build binaries are available on [GitHub](https://github.com/thibmeu/drand-rs/releases/tag/v0.0.4).
+
+### Encryption
+
+* local: `dee crypt -r 1000 original.png > encrypted.pem`
+* remote: `curl -X POST --data-binary @original.png https://tlock_worker.crypto-team.workers.dev/encrypt/1000 > encrypted.pem`
+
+### Decryption
+
+**Only supported for round 1000**
+
+* local: `dee crypt --decrypt encrypted.pem > decrypted.png`
+* remote: `curl -X POST --data-binary @encrypted.pem https://tlock_worker.crypto-team.workers.dev/decrypt > decrypted.png`
+
+
+## Development
 
 This template starts you off with a `src/lib.rs` file, acting as an entrypoint for requests hitting your Worker. Feel free to add more code in this file, or create Rust modules anywhere else for this project to use.
 
@@ -38,13 +37,3 @@ $ npm run deploy
 ```
 
 Read the latest `worker` crate documentation here: https://docs.rs/worker
-
-## WebAssembly
-
-`workers-rs` (the Rust SDK for Cloudflare Workers used in this template) is meant to be executed as compiled WebAssembly, and as such so **must** all the code you write and depend upon. All crates and modules used in Rust-based Workers projects have to compile to the `wasm32-unknown-unknown` triple.
-
-Read more about this on the [`workers-rs`](https://github.com/cloudflare/workers-rs) project README.
-
-## Issues
-
-If you have any problems with the `worker` crate, please open an issue on the upstream project issue tracker on the [`workers-rs` repository](https://github.com/cloudflare/workers-rs).
