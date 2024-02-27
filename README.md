@@ -1,10 +1,12 @@
 # tlock-worker
 
-Demonstration worker supporting timelock encryption. Deployed at `https://tlock_worker.crypto-team.workers.dev`.
+Demonstration worker supporting timelock encryption.
 
 ## Usage
 
-If you'd like to perform local encryption and decryption, you can install `dee`. Pre-build binaries are available on [GitHub](https://github.com/thibmeu/drand-rs/releases/tag/v0.0.4).
+If you'd like to perform local encryption and decryption, you can install `dee`. Pre-build binaries are available on [GitHub](https://github.com/thibmeu/drand-rs/releases).
+
+The worker is configured to use `https://drand.cloudflare.com/dbd506d6ef76e5f386f41c651dcb808c5bcbd75471cc4eafa3f4df7ad4e4c493`.
 
 ### Encryption
 
@@ -26,9 +28,6 @@ This template starts you off with a `src/lib.rs` file, acting as an entrypoint f
 With `wrangler`, you can build, test, and deploy your Worker with the following commands:
 
 ```sh
-# compiles your project to WebAssembly and will warn of any issues
-$ npm run build
-
 # run your Worker in an ideal development workflow (with a local server, file watcher & more)
 $ npm run dev
 

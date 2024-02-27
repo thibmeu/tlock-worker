@@ -1,4 +1,4 @@
-name = "tlock_worker"
+name = "tlock-worker"
 main = "build/worker/shim.mjs"
 compatibility_date = "2022-01-20"
 workers_dev = true

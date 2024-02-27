@@ -1,4 +1,6 @@
 
+use std::convert::TryInto;
+
 use worker::*;
 
 mod utils;
@@ -29,9 +31,8 @@ POST /decrypt to decrypt
 
 File should be under 10MiB in size"))
         .post_async("/encrypt/:round", |mut req, ctx| async move {
-            let chain = drand_core::chain::Chain::new("https://drand.cloudflare.com/dbd506d6ef76e5f386f41c651dcb808c5bcbd75471cc4eafa3f4df7ad4e4c493");
-            let client = drand_core::http_chain_client::HttpChainClient::new(chain, None);
-            let info = client.chain().info().await.unwrap();
+            let client: drand_core::HttpClient = "https://drand.cloudflare.com/dbd506d6ef76e5f386f41c651dcb808c5bcbd75471cc4eafa3f4df7ad4e4c493".try_into().unwrap();
+            let info = client.chain_info().await.unwrap();
             let round = match ctx.param("round") {
                 Some(r) => r.parse::<u64>().unwrap(),
                 None => return Response::error("round invalid", 400),
@@ -52,9 +53,8 @@ File should be under 10MiB in size"))
             Response::from_bytes(encrypted)
         })
         .post_async("/decrypt", |mut req, _ctx| async move {
-            let chain = drand_core::chain::Chain::new("https://drand.cloudflare.com/dbd506d6ef76e5f386f41c651dcb808c5bcbd75471cc4eafa3f4df7ad4e4c493");
-            let client = drand_core::http_chain_client::HttpChainClient::new(chain, Some(drand_core::chain::ChainOptions::new(false, true, None)));
-            let info = client.chain().info().await.unwrap();
+            let client: drand_core::HttpClient = "https://drand.cloudflare.com/dbd506d6ef76e5f386f41c651dcb808c5bcbd75471cc4eafa3f4df7ad4e4c493".try_into().unwrap();
+            let info = client.chain_info().await.unwrap();
 
             let src = req.bytes().await?;
             let round = tlock_age::decrypt_header(src.clone().as_slice()).unwrap().round();
