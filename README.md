@@ -6,7 +6,7 @@ Demonstration worker supporting timelock encryption.
 
 If you'd like to perform local encryption and decryption, you can install `dee`. Pre-build binaries are available on [GitHub](https://github.com/thibmeu/drand-rs/releases).
 
-The worker is configured to use `https://drand.cloudflare.com/dbd506d6ef76e5f386f41c651dcb808c5bcbd75471cc4eafa3f4df7ad4e4c493`.
+The worker is configured to use quicknet `https://drand.cloudflare.com/52db9ba70e0cc0f6eaf7803dd07447a1f5477735fd3f661792ba94600c84e971`.
 
 ### Encryption
 

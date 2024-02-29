@@ -1,8 +1,6 @@
 use drand_core::{beacon::ApiBeacon, chain::ChainInfo};
 use worker::*;
 
-mod utils;
-
 fn log_request(req: &Request) {
     console_log!(
         "{} - [{}], located at: {:?}, within: {}",
@@ -17,7 +15,6 @@ fn log_request(req: &Request) {
 pub async fn main(req: Request, env: Env, _ctx: worker::Context) -> Result<Response> {
     log_request(&req);
 
-    utils::set_panic_hook();
     let router = Router::new();
 
     // Add as many routes as your Worker needs! Each route will get a `Request` for handling HTTP
