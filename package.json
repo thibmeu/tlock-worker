@@ -1,6 +1,6 @@
 {
 	"name": "tlock-worker",
-	"version": "0.1.0",
+	"version": "0.1.1",
 	"author": "Thibault <contact@thibaultmeunier.com>",
 	"license": "MIT",
 	"scripts": {

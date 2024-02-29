@@ -1,22 +1,25 @@
 [package]
 name = "tlock-worker"
-version = "0.1.0"
+version = "0.1.1"
 edition = "2018"
 
 [lib]
-crate-type = ["cdylib", "rlib"]
+crate-type = ["cdylib"]
 
 [features]
 default = ["console_error_panic_hook"]
 
+[package.metadata.wasm-pack.profile.release]
+wasm-opt = false
+
 [dependencies]
 cfg-if = "0.1.2"
 console_error_panic_hook = { version = "0.1.1", optional = true }
-drand_core = "0.0.7"
+drand_core = { version = "0.0.15", default-features = false}
 hex = "0.4.3"
 serde_json = "1.0.67"
-tlock_age = { version = "0.0.2", features = ["armor"] }
-worker = "0.0.11"
+tlock_age = { version = "0.0.5", features = ["armor"] }
+worker = "0.0.18"
 
 [profile.release]
 # Tell `rustc` to optimize for small code size.

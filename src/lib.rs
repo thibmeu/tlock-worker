@@ -1,6 +1,4 @@
-
-use std::convert::TryInto;
-
+use drand_core::{beacon::ApiBeacon, chain::ChainInfo};
 use worker::*;
 
 mod utils;
@@ -26,13 +24,12 @@ pub async fn main(req: Request, env: Env, _ctx: worker::Context) -> Result<Respo
     // functionality and a `RouteContext` which you can use to  and get route parameters and
     // Environment bindings like KV Stores, Durable Objects, Secrets, and Variables.
     router
-        .get("/", |_, _| Response::ok("POST /encrypt/:round to encrypt to a specfic round on fastnet
+        .get("/", |_, _| Response::ok("POST /encrypt/:round to encrypt to a specfic round on quicknet
 POST /decrypt to decrypt
 
 File should be under 10MiB in size"))
         .post_async("/encrypt/:round", |mut req, ctx| async move {
-            let client: drand_core::HttpClient = "https://drand.cloudflare.com/dbd506d6ef76e5f386f41c651dcb808c5bcbd75471cc4eafa3f4df7ad4e4c493".try_into().unwrap();
-            let info = client.chain_info().await.unwrap();
+            let info: ChainInfo = Fetch::Url(Url::parse("https://drand.cloudflare.com/52db9ba70e0cc0f6eaf7803dd07447a1f5477735fd3f661792ba94600c84e971/info")?).send().await?.json().await?;
             let round = match ctx.param("round") {
                 Some(r) => r.parse::<u64>().unwrap(),
                 None => return Response::error("round invalid", 400),
@@ -53,14 +50,14 @@ File should be under 10MiB in size"))
             Response::from_bytes(encrypted)
         })
         .post_async("/decrypt", |mut req, _ctx| async move {
-            let client: drand_core::HttpClient = "https://drand.cloudflare.com/dbd506d6ef76e5f386f41c651dcb808c5bcbd75471cc4eafa3f4df7ad4e4c493".try_into().unwrap();
-            let info = client.chain_info().await.unwrap();
+            let info: ChainInfo = Fetch::Url(Url::parse("https://drand.cloudflare.com/52db9ba70e0cc0f6eaf7803dd07447a1f5477735fd3f661792ba94600c84e971/info")?).send().await?.json().await?;
 
             let src = req.bytes().await?;
             let round = tlock_age::decrypt_header(src.clone().as_slice()).unwrap().round();
 
             let mut decrypted = vec![];
-            let signature = client.get(round).await.unwrap().signature();
+            let beacon: ApiBeacon = Fetch::Url(Url::parse(&format!("https://drand.cloudflare.com/52db9ba70e0cc0f6eaf7803dd07447a1f5477735fd3f661792ba94600c84e971/public/{round}"))?).send().await?.json().await?;
+            let signature = beacon.signature();
             match tlock_age::decrypt(
                 &mut decrypted,
                 src.as_slice(),
